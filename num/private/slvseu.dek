@@ -8,7 +8,7 @@ c
      &          caller_id, nvar, nz, lblk, dblk, ublk,
      &          nzmax,isparse,ia,ja,sa,
      &          lrd,rpar_decsol,lid,ipar_decsol,ier)
-      implicit real*8 (a-h,o-z)
+      implicit real(dp) (a-h,o-z)
       interface
 #include "mtx_decsol.dek"
 #include"mtx_decsols.dek"
