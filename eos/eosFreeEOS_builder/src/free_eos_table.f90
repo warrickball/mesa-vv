@@ -29,6 +29,7 @@ module free_eos_table
    use const_def
    use eos_def
    use eos_lib
+   use mod_free_eos, only: free_eos
 
    implicit none
 
