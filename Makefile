@@ -1,5 +1,5 @@
 .DELETE_ON_ERROR:
-SUBDIRS := const utils
+SUBDIRS := const utils math
 BUILD_SUBDIR := @$(MAKE) -C
 CHECK_SUBDIR := @$(MAKE) check -C
 

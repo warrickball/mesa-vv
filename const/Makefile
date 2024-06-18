@@ -5,6 +5,7 @@ SRCS := public/const_def.f90 public/const_lib.f90
 SRCS_CHECK := test/src/test_const.f
 INTERNAL_DEPENDS_ON :=
 EXTERNAL_DEPENDS_ON :=
+CHECK_RESULTS_GOLDEN := test/test_output
 
 # Install
 
