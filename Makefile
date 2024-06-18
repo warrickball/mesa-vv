@@ -1,5 +1,6 @@
 SUBDIRS := const utils
 BUILD_SUBDIR := @$(MAKE) -C
+CHECK_SUBDIR := @$(MAKE) check -C
 
 include make/subdir-deps.mk
 

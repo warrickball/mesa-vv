@@ -4,11 +4,13 @@ CHECK_RESULTS := $(CHECK_RESULT_DIR)/check-results
 CHECK_RESULTS_GOLDEN := test/test_output
 
 $(CHECKER): $(ALL_DEPS) $(OBJS_CHECK) | $(BUILD_DIR)/bin/
-	$(EXECUTABLE) -o $(CHECKER) $(OBJS_CHECK) $(LIB_DEP_ARGS) $(shell PKG_CONFIG_PATH=$(BUILD_DIR)/lib/pkgconfig pkg-config --libs --static mesa-$(MODULE_NAME))
+	$(EXECUTABLE) -o $(CHECKER) $(OBJS_CHECK) $(shell PKG_CONFIG_PATH=$(BUILD_DIR)/lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --libs --static mesa-$(MODULE_NAME))
 
 ifneq ($(OBJS_CHECK),)
-  check: $(CHECKER) | $(CHECK_RESULT_DIR)/
-	$(CHECKER) > $(CHECK_RESULTS)
+  $(CHECK_RESULTS) &: $(CHECKER) | $(CHECK_RESULT_DIR)/
+	pushd test; ../$(CHECKER) > ../$(CHECK_RESULTS); popd
+
+  check: $(CHECK_RESULTS)
 	diff -b $(CHECK_RESULTS) $(CHECK_RESULTS_GOLDEN)
 else
   check:
