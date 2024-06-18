@@ -1,12 +1,7 @@
 SUBDIRS := const utils
 BUILD_SUBDIR := @$(MAKE) -C
 
-define test_fn
-PKG_CONFIG_PATH=$(addprefix ../,$(addsuffix /build/lib/pkgconfig,$(1))):$(PKG_CONFIG_PATH)
-endef
-
-const:
-	$(BUILD_SUBDIR) $@
+include make/subdir-deps.mk
 
 clean:
 	@for subdir in $(SUBDIRS); do \
