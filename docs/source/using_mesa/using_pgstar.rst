@@ -13,7 +13,7 @@ If you're using the MESA SDK, you should have everything you need to use
 PGSTAR. Otherwise, you need to have installed PGPLOT, XWindows, and a
 few libraries that they need. See the makefile_header_non_mesasdk in
 $MESA_DIR/utils for details. You'll also find pgplot.tar.bz2 in
-$MESA_DIR/utils in case you need to install PGPLOT (thanks to Tim
+$MESA_DIR/tools in case you need to install PGPLOT (thanks to Tim
 Pearson of CalTech for creating PGPLOT and giving us permission to
 distribute it with MESA).
 
