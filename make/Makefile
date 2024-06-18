@@ -9,6 +9,8 @@ MAKEFLAGS += --no-builtin-variables
 DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)
 ifneq ($(INTERNAL_DEPENDS_ON),)
   DEPENDS_ON += $(addprefix mesa-,$(INTERNAL_DEPENDS_ON))
+  PKG_CONFIG_PATH := $(shell ../make/gen-pkgconfig-path $(INTERNAL_DEPENDS_ON))
+  export PKG_CONFIG_PATH
 endif
 NODEPS := $(or $(filter clean,$(MAKECMDGOALS)),$(filter print-mesa-deps,$(MAKECMDGOALS)))
 

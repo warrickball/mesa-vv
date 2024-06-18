@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+for m in $@; do
+    PKG_CONFIG_PATH=../$m/build/lib/pkgconfig:$PKG_CONFIG_PATH
+done
+
+echo $PKG_CONFIG_PATH
