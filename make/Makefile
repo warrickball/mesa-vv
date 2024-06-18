@@ -7,6 +7,9 @@ MAKEFLAGS += --no-builtin-variables
 MAKEFLAGS += -I../make
 
 .DELETE_ON_ERROR:
+.SHELLFLAGS := -eu -o pipefail -c
+.DEFAULT_GOAL := all
+.PHONY: clean print-mesa-deps install all check
 
 DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)
 ifneq ($(INTERNAL_DEPENDS_ON),)
@@ -49,5 +52,3 @@ clean:
 
 print-mesa-deps:
 	@echo $(INTERNAL_DEPENDS_ON)
-
-.DEFAULT_GOAL := all

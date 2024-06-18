@@ -1,4 +1,5 @@
 .DELETE_ON_ERROR:
+.SHELLFLAGS := -eu -o pipefail -c
 SUBDIRS := const utils math
 BUILD_SUBDIR := @$(MAKE) -C
 CHECK_SUBDIR := @$(MAKE) check -C
