@@ -2,6 +2,8 @@ SUBDIRS := const utils
 BUILD_SUBDIR := @$(MAKE) -C
 CHECK_SUBDIR := @$(MAKE) check -C
 
+all: $(SUBDIRS)
+
 include make/subdir-deps.mk
 
 clean:
