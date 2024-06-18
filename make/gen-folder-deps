@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+MAKE=$1
+shift
+
+for subdir in $@; do \
+  DEPS=`$MAKE --no-print-directory -sC ${subdir} print-mesa-deps`
+  cat <<EOF
+${subdir}: ${DEPS}
+	\$(call build_and_test,\$@,\$^)
+EOF
+done

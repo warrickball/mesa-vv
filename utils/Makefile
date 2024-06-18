@@ -1,3 +1,6 @@
+# Build
+
+MODULE_NAME := utils
 SRCS := public/utils_def.f90 \
 	public/utils_lib.f90 \
 	private/utils_c_system.c \
@@ -10,11 +13,14 @@ SRCS := public/utils_def.f90 \
 	private/utils_openmp_stub.f90 \
 	private/utils_system.f90
 SRCS_CHECK = test/src/test_utils.f90
+INTERNAL_DEPENDS_ON := const
+EXTERNAL_DEPENDS_ON :=
+
+# Install
+
 MODULES := utils_def.mod utils_lib.mod
-DEPENDS_ON := mesa-const
 INSTALL_INCLUDES := formats
 BINTYPE := static-lib
-MODULE_NAME := utils
 
 MAKEFLAGS += -I../make
 

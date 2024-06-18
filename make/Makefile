@@ -4,16 +4,15 @@
 
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
+.DELETE_ON_ERROR:
 
-BUILD_DIR := build
+DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)
+ifneq ($(INTERNAL_DEPENDS_ON),)
+  DEPENDS_ON += $(addprefix mesa-,$(INTERNAL_DEPENDS_ON))
+endif
+NODEPS := $(or $(filter clean,$(MAKECMDGOALS)),$(filter print-mesa-deps,$(MAKECMDGOALS)))
 
-$(BUILD_DIR):
-	mkdir -p $@
-
-$(BUILD_DIR)%/:
-	mkdir -p $@
-
-NODEPS := $(filter clean,$(MAKECMDGOALS))
+include setup-builddir.mk
 
 ifeq ($(MODULE_NAME),)
   $(error Missing module name)
@@ -43,5 +42,8 @@ include check.mk
 
 clean:
 	@rm -rf $(BUILD_DIR)
+
+print-mesa-deps:
+	@echo $(INTERNAL_DEPENDS_ON)
 
 .DEFAULT_GOAL := all

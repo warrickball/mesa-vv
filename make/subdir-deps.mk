@@ -3,12 +3,11 @@ PKG_CONFIG_PATH=$(addprefix ../,$(addsuffix /build/lib/pkgconfig,$(1))):$(PKG_CO
 endef
 
 define build_and_test
-	$(BUILD_SUBDIR) $(1) $(call pc,$(2))
-	$(CHECK_SUBDIR) $(1) $(call pc,$(2))
+$(BUILD_SUBDIR) $(1) $(call pc,$(2))
+$(CHECK_SUBDIR) $(1) $(call pc,$(2))
 endef
 
-const:
-	$(call build_and_test,$@,$^)
+$(BUILD_DIR)/depend: $(addsuffix /Makefile,$(SUBDIRS)) make/gen-folder-deps | $(BUILD_DIR)/
+	make/gen-folder-deps "$(MAKE)" $(SUBDIRS) > $(BUILD_DIR)/depend
 
-utils: const
-	$(call build_and_test,$@,$^)
+include $(BUILD_DIR)/depend

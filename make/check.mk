@@ -9,9 +9,9 @@ $(CHECKER): $(ALL_DEPS) $(OBJS_CHECK) | $(BUILD_DIR)/bin/
 ifneq ($(OBJS_CHECK),)
   $(CHECK_RESULTS) &: $(CHECKER) | $(CHECK_RESULT_DIR)/
 	pushd test; ../$(CHECKER) > ../$(CHECK_RESULTS); popd
+	diff -b $(CHECK_RESULTS) $(CHECK_RESULTS_GOLDEN)
 
   check: $(CHECK_RESULTS)
-	diff -b $(CHECK_RESULTS) $(CHECK_RESULTS_GOLDEN)
 else
   check:
 	$(error No test sources specified)
