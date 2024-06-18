@@ -22,6 +22,4 @@ MODULES := utils_def.mod utils_lib.mod
 INSTALL_INCLUDES := formats
 BINTYPE := static-lib
 
-MAKEFLAGS += -I../make
-
 include ../make/Makefile

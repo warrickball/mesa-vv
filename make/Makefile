@@ -4,6 +4,8 @@
 
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
+MAKEFLAGS += -I../make
+
 .DELETE_ON_ERROR:
 
 DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)

@@ -12,6 +12,4 @@ MODULES := const_def.mod const_lib.mod
 INSTALL_INCLUDES :=
 BINTYPE := static-lib
 
-MAKEFLAGS += -I../make
-
 include ../make/Makefile
