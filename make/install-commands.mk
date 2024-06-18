@@ -13,10 +13,12 @@ install-exec:
 	install -d $(PREFIX)/bin
 	install $(OBJ_OUT) $(PREFIX)/bin
 
+INSTALL_INCLUDES_BUILD := $(addprefix $(BUILD_DIR)/include/,$(notdir $(INSTALL_INCLUDES)))
+
 install-includes:
 	install -d $(PREFIX)/include
-	if [[ "$(INSTALL_INCLUDES)" ]]; then \
-	  for f in "$(INSTALL_INCLUDES)"; do \
+	if [[ "$(INSTALL_INCLUDES_BUILD)" ]]; then \
+	  for f in "$(INSTALL_INCLUDES_BUILD)"; do \
 	    install -m 644 $$f $(PREFIX)/include; \
 	  done; \
 	fi

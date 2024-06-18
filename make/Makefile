@@ -39,7 +39,7 @@ else
   $(error Unknown or unset BINTYPE)
 endif
 
-ALL_DEPS += $(OBJ_OUT) $(MODULES)
+ALL_DEPS += $(OBJ_OUT) $(MODULES) $(INSTALL_INCLUDES_BUILD)
 
 all: $(ALL_DEPS)
 
