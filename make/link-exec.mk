@@ -1,0 +1,5 @@
+OBJ_OUT := $(BUILD_DIR)/bin/$(MODULE_NAME)
+INSTALL_COMMANDS += install-exec
+
+$(OBJ_OUT): $(OBJS) | $(BUILD_DIR)/bin/
+	$(EXECUTABLE) -o $(OBJ_OUT) $(OBJS) $(LIB_DEP_ARGS)
