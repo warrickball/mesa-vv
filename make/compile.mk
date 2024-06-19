@@ -12,21 +12,22 @@ define to_obj_ext
   )))))
 endef
 
-OBJS = $(call to_obj_ext,$(SRCS))
+OBJS = $(call to_obj_ext,$(SRCS) $(SRCS_GENERATED))
 ifneq ($(SRCS_CHECK),)
-  OBJS_CHECK = $(call to_obj_ext,$(SRCS_CHECK))
+  OBJS_CHECK = $(call to_obj_ext,$(SRCS_CHECK) $(SRCS_CHECK_GENERATED))
 endif
 MODULES := $(addprefix $(MODULE_DIR)/, $(MODULES))
 
 MAKEDEPF90 := makedepf90 -free -m $(MODULE_SUBDIR)/%m.mod -B $(BUILD_DIR)
 
 ifeq ($(NODEPS),)
-  FORTRAN_SOURCES := $(filter-out %.c, $(SRCS) $(SRCS_CHECK))
+  FORTRAN_SOURCES := $(filter-out %.c, $(SRCS) $(SRCS_CHECK) $(addprefix $(BUILD_DIR)/,$(SRCS_GENERATED) $(SRCS_CHECK_GENERATED)))
   $(BUILD_DIR)/depend : $(FORTRAN_SOURCES) | $(BUILD_DIR)
 	MAKEDEPF90=$(call escape,$(MAKEDEPF90)) \
 	MAKEDEPF90FLAGS=$(call escape,$(MAKEDEPF90FLAGS)) \
 	FORTRAN_SOURCES=$(call escape,$(FORTRAN_SOURCES)) \
 	INSTALL_INCLUDES=$(call escape,$(INSTALL_INCLUDES)) \
+	BUILD_DIR=$(call escape,$(BUILD_DIR)) \
 	../make/gen-compile-tree > $(BUILD_DIR)/depend
 
   include $(BUILD_DIR)/depend

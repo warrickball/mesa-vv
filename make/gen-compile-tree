@@ -4,7 +4,8 @@ set -euo pipefail
 
 ${MAKEDEPF90} ${MAKEDEPF90FLAGS} -I public:private ${FORTRAN_SOURCES} \
 	| sed -rn 's/([^ ]*) (.*): ([^ ]*) (.*)/echo "\1 \2\&: \3 \4| \\\$(MODULE_DIR)\/ $(dirname \1)\/ \n\t\\\$(FCOMPILE) \3 -o \1 -J \\\$(MODULE_DIR)\n"/ep' \
-	| sed -r 's/\$\(FCOMPILE\) ([^.]*).f /$(FCOMPILE_LEGACY) \1.f /'
+	| sed -r 's/\$\(FCOMPILE\) ([^.]*).f /$(FCOMPILE_LEGACY) \1.f /' \
+	| sed "s|${BUILD_DIR}/${BUILD_DIR}|${BUILD_DIR}|g"
 
 for f in ${INSTALL_INCLUDES}; do
 cat <<EOF
