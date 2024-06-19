@@ -5,7 +5,7 @@ ifneq ($(QUIET),)
 MAKEFLAGS += --no-print-directory --quiet
 endif
 
-SUBDIRS := const utils math mtx
+SUBDIRS := const utils math mtx chem
 BUILD_SUBDIR := @$(MAKE) -C
 CHECK_SUBDIR := @$(MAKE) check -C
 
