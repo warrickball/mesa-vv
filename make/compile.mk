@@ -1,4 +1,4 @@
-MODULE_SUBDIR := include
+MODULE_SUBDIR := modules
 MODULE_DIR := $(BUILD_DIR)/$(MODULE_SUBDIR)
 
 escape = '$(subst ','\'',$(1))'
@@ -27,6 +27,7 @@ ifeq ($(NODEPS),)
 	MAKEDEPF90FLAGS=$(call escape,$(MAKEDEPF90FLAGS)) \
 	FORTRAN_SOURCES=$(call escape,$(FORTRAN_SOURCES)) \
 	INSTALL_INCLUDES=$(call escape,$(INSTALL_INCLUDES)) \
+	MODULES=$(call escape,$(MODULES)) \
 	BUILD_DIR=$(call escape,$(BUILD_DIR)) \
 	../make/gen-compile-tree > $(BUILD_DIR)/depend
 

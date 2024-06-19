@@ -13,7 +13,7 @@ install-exec:
 	install -d $(PREFIX)/bin
 	install $(OBJ_OUT) $(PREFIX)/bin
 
-INSTALL_INCLUDES_BUILD := $(addprefix $(BUILD_DIR)/include/,$(notdir $(INSTALL_INCLUDES)))
+INSTALL_INCLUDES_BUILD := $(addprefix $(BUILD_DIR)/include/,$(notdir $(INSTALL_INCLUDES) $(MODULES)))
 
 install-includes:
 	install -d $(PREFIX)/include

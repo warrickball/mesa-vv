@@ -9,7 +9,15 @@ ${MAKEDEPF90} ${MAKEDEPF90FLAGS} -I public:private ${FORTRAN_SOURCES} \
 
 for f in ${INSTALL_INCLUDES}; do
 cat <<EOF
-\$(BUILD_DIR)/include/$(basename $f) : $f
+\$(BUILD_DIR)/include/$(basename $f) : $f | ${BUILD_DIR}/include/
+	cp \$^ \$@
+
+EOF
+done
+
+for f in ${MODULES}; do
+cat <<EOF
+\$(BUILD_DIR)/include/$(basename $f) : $f | ${BUILD_DIR}/include/
 	cp \$^ \$@
 
 EOF
