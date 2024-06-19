@@ -29,7 +29,7 @@ ifeq ($(NODEPS),)
 	INSTALL_INCLUDES=$(call escape,$(INSTALL_INCLUDES)) \
 	MODULES=$(call escape,$(MODULES)) \
 	BUILD_DIR=$(call escape,$(BUILD_DIR)) \
-	../make/gen-compile-tree > $(BUILD_DIR)/depend
+	$(MAKE_DIR)/gen-compile-tree > $(BUILD_DIR)/depend
 
   include $(BUILD_DIR)/depend
 endif

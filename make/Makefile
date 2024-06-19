@@ -1,20 +1,23 @@
 # needs: MODULE_NAME, SRCS, PREFIX, MODULE_FILES
 
 # Makefile sanity
-
 MAKEFLAGS += --no-builtin-rules
 MAKEFLAGS += --no-builtin-variables
-MAKEFLAGS += -I../make
 
 .DELETE_ON_ERROR:
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := all
 .PHONY: clean print-mesa-deps install all check
 
+# Position independent
+
+MAKE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+MAKEFLAGS += -I$(MAKE_DIR)
+
 DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)
 ifneq ($(INTERNAL_DEPENDS_ON),)
   DEPENDS_ON += $(addprefix mesa-,$(INTERNAL_DEPENDS_ON))
-  PKG_CONFIG_PATH := $(shell ../make/gen-pkgconfig-path $(INTERNAL_DEPENDS_ON))
+  PKG_CONFIG_PATH := $(shell MAKE_DIR=$(MAKE_DIR) $(MAKE_DIR)/gen-pkgconfig-path $(INTERNAL_DEPENDS_ON))
   export PKG_CONFIG_PATH
 endif
 NODEPS := $(or $(filter clean,$(MAKECMDGOALS)),$(filter print-mesa-deps,$(MAKECMDGOALS)))

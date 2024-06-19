@@ -3,7 +3,7 @@
 set -e
 
 for m in $@; do
-    PKG_CONFIG_PATH=../$m/build/lib/pkgconfig:$PKG_CONFIG_PATH
+    PKG_CONFIG_PATH=${MAKE_DIR}/../$m/build/lib/pkgconfig:$PKG_CONFIG_PATH
 done
 
 echo $PKG_CONFIG_PATH
