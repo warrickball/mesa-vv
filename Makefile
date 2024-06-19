@@ -1,5 +1,10 @@
 .DELETE_ON_ERROR:
 .SHELLFLAGS := -eu -o pipefail -c
+
+ifneq ($(QUIET),)
+MAKEFLAGS += --no-print-directory --quiet
+endif
+
 SUBDIRS := const utils math mtx
 BUILD_SUBDIR := @$(MAKE) -C
 CHECK_SUBDIR := @$(MAKE) check -C

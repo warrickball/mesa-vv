@@ -7,7 +7,7 @@ $(CHECKER): $(ALL_DEPS) $(OBJS_CHECK) | $(BUILD_DIR)/bin/
 
 ifneq ($(OBJS_CHECK),)
   $(CHECK_RESULTS) &: $(CHECKER) | $(CHECK_RESULT_DIR)/
-	pushd test; ../$(CHECKER) > ../$(CHECK_RESULTS); popd
+	pushd test > /dev/null ; ../$(CHECKER) > ../$(CHECK_RESULTS); popd > /dev/null
 	diff -b $(CHECK_RESULTS) $(CHECK_RESULTS_GOLDEN)
 
   check: $(CHECK_RESULTS)
