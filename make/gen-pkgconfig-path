@@ -2,8 +2,12 @@
 
 set -e
 
+PKG_CONFIG_PATH="$PWD/$1/build/lib/pkgconfig"
+
+shift
+
 for m in $@; do
-    PKG_CONFIG_PATH=${MAKE_DIR}/../$m/build/lib/pkgconfig:$PKG_CONFIG_PATH
+    PKG_CONFIG_PATH=$PWD/$m/build/lib/pkgconfig:$PKG_CONFIG_PATH
 done
 
 echo $PKG_CONFIG_PATH

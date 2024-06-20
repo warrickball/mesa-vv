@@ -17,7 +17,7 @@ MAKEFLAGS += -I$(MAKE_DIR)
 DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)
 ifneq ($(INTERNAL_DEPENDS_ON),)
   DEPENDS_ON += $(addprefix mesa-,$(INTERNAL_DEPENDS_ON))
-  PKG_CONFIG_PATH := $(shell MAKE_DIR=$(MAKE_DIR) $(MAKE_DIR)/gen-pkgconfig-path $(INTERNAL_DEPENDS_ON))
+  PKG_CONFIG_PATH := $(shell $(MAKE) -s --no-print-directory -C $(MAKE_DIR).. print-pkgconfig-path):$(PKG_CONFIG_PATH)
   export PKG_CONFIG_PATH
 endif
 NODEPS := $(or $(filter clean,$(MAKECMDGOALS)),$(filter print-mesa-deps,$(MAKECMDGOALS)))

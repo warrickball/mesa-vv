@@ -20,4 +20,10 @@ clean:
 	  $(MAKE) --no-print-directory -C $$subdir clean; \
 	done
 
-.PHONY: $(SUBDIRS) clean
+$(BUILD_DIR)/pkg-config-path: Makefile | $(BUILD_DIR)
+	@make/gen-pkgconfig-path $(SUBDIRS) > $@
+
+print-pkgconfig-path: $(BUILD_DIR)/pkg-config-path
+	@cat $(BUILD_DIR)/pkg-config-path
+
+.PHONY: $(SUBDIRS) clean print-modules print-pkgconfig-path
