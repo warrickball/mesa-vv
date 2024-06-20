@@ -11,17 +11,16 @@ CHECK_SUBDIR := @$(MAKE) check -C
 
 all: $(SUBDIRS)
 
+BUILD_DIR := build
+
 include make/setup-builddir.mk
 include make/subdir-deps.mk
 
 clean:
-	@rm -rf build
-	@for subdir in $(SUBDIRS); do \
-	  $(MAKE) --no-print-directory -C $$subdir clean; \
-	done
+	@rm -rf $(BUILD_DIR)
 
 $(BUILD_DIR)/pkg-config-path: Makefile | $(BUILD_DIR)
-	@make/gen-pkgconfig-path $(SUBDIRS) > $@
+	 @BUILD_DIR=$(BUILD_DIR) make/gen-pkgconfig-path $(SUBDIRS) > $@
 
 print-pkgconfig-path: $(BUILD_DIR)/pkg-config-path
 	@cat $(BUILD_DIR)/pkg-config-path

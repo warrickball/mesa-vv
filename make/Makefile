@@ -22,6 +22,7 @@ ifneq ($(INTERNAL_DEPENDS_ON),)
 endif
 NODEPS := $(or $(filter clean,$(MAKECMDGOALS)),$(filter print-mesa-deps,$(MAKECMDGOALS)))
 
+BUILD_DIR := $(MAKE_DIR)../build/$(MODULE_NAME)
 include setup-builddir.mk
 
 ifeq ($(MODULE_NAME),)

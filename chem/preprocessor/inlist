@@ -1,7 +1,7 @@
 &chem
 	! directories
-	data_dir = 'build/chem-input'
-	output_dir = 'build/chem-out'
+	data_dir = '../../build/chem-preprocessor/chem-input'
+	output_dir = '../../build/chem-preprocessor/chem-out'
 
 	! input files
 	masstable_filename = 'masslib_library_5.data'
