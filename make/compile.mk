@@ -33,5 +33,7 @@ ifeq ($(NODEPS),)
   include $(BUILD_DIR)/depend
 endif
 
-$(BUILD_DIR)/%.o: %.c
+.SECONDEXPANSION:
+
+$(BUILD_DIR)/%.o: %.c | $$(dir $$@0)/
 	$(CCOMPILE) $< -o $@
