@@ -19,8 +19,10 @@ while (my $line = <>) {
         }
 
         print <<~"MAKEFILE"
-        $mods &: $src $dep_mods | \$(MODULE_DIR)/
+        $obj.anc : $src $dep_mods | \$(MODULE_DIR)/ $obj_dir/
         \t\$(FCOMPILE_MODULE) $src -J \$(MODULE_DIR)
+        \t\@touch \$@
+        $mods : $obj.anc
         $obj : $src $dep_mods | \$(SCRATCH_DIR)/ $obj_dir/
         \t\$($compiler) $src -o $obj -I \$(MODULE_DIR) -J \$(SCRATCH_DIR)
         MAKEFILE
