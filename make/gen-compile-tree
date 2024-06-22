@@ -1,24 +1,36 @@
-#!/bin/sh
+#!/usr/bin/env perl
+use strict;
+use warnings "all";
+use File::Basename;
 
-set -euo pipefail
+my $build_dir = $ENV{'BUILD_DIR'};
+my $install_includes = $ENV{'INSTALL_INCLUDES'};
+my $modules = $ENV{'MODULES'};
 
-${MAKEDEPF90} ${MAKEDEPF90FLAGS} -I public:private ${FORTRAN_SOURCES} \
-	| sed -rn 's/([^ ]*) (.*): ([^ ]*) (.*)/echo "\1 \2\&: \3 \4| \\\$(MODULE_DIR)\/ $(dirname \1)\/ \n\t\\\$(FCOMPILE) \3 -o \1 -J \\\$(MODULE_DIR)\n"/ep' \
-	| sed -r 's/\$\(FCOMPILE\) ([^.]*).f /$(FCOMPILE_LEGACY) \1.f /' \
-	| sed "s|${BUILD_DIR}/${BUILD_DIR}|${BUILD_DIR}|g"
+while (my $line = <>) {
+    if ($line =~ /([^ ]*) (.*): ([^ ]*) (.*)/) {
+        my ($obj, $mods, $src, $dep_mods) = ($1, $2, $3, $4);
+        $obj =~ s{$build_dir/$build_dir}{$build_dir};
+        my $obj_dir = dirname($obj);
+        my $compiler = "FCOMPILE";
 
-for f in ${INSTALL_INCLUDES}; do
-cat <<EOF
-\$(BUILD_DIR)/include/$(basename $f) : $f | ${BUILD_DIR}/include/
-	cp \$^ \$@
+        if ($src =~ /(.*).f$/) {
+            $compiler = "FCOMPILE_LEGACY";
+        }
 
-EOF
-done
+        print <<~"MAKEFILE"
+        $mods &: $src $dep_mods | \$(MODULE_DIR)/
+        \t\$(FCOMPILE_MODULE) $src -J \$(MODULE_DIR)
+        $obj : $src $dep_mods | \$(SCRATCH_DIR)/ $obj_dir/
+        \t\$($compiler) $src -o $obj -I \$(MODULE_DIR) -J \$(SCRATCH_DIR)
+        MAKEFILE
+    }
+}
 
-for f in ${MODULES}; do
-cat <<EOF
-\$(BUILD_DIR)/include/$(basename $f) : $f | ${BUILD_DIR}/include/
-	cp \$^ \$@
-
-EOF
-done
+foreach my $f (split " ","$install_includes $modules") {
+    my $basename_f = basename($f);
+    print <<~"MAKEFILE"
+    \$(BUILD_DIR)/include/$basename_f : $f | \$(BUILD_DIR)/include/
+    \tcp \$^ \$@
+    MAKEFILE
+}

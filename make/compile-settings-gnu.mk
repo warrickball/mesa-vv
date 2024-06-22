@@ -18,6 +18,7 @@ CFLAGS := $(FLAGS_CODE_SANITY) $(FLAGS_REPRO) $(FLAGS_OPT) $(FLAGS_PREPROCESSOR)
 
 PREPROCESS := gfortran -cpp -E
 FCOMPILE := gfortran $(FFLAGS) -c
+FCOMPILE_MODULE := gfortran $(FFLAGS) -c -fsyntax-only
 FCOMPILE_LEGACY := gfortran $(FFLAGS_LEGACY) -c
 CCOMPILE := gcc $(CFLAGS) -c
 ifneq ($(and $(DEPENDS_ON),$(if $(NODEPS),,deps)),)

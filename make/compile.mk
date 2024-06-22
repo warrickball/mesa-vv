@@ -1,5 +1,6 @@
 MODULE_SUBDIR := modules
 MODULE_DIR := $(BUILD_DIR)/$(MODULE_SUBDIR)
+SCRATCH_DIR := $(BUILD_DIR)/scratch
 
 escape = '$(subst ','\'',$(1))'
 
@@ -23,9 +24,7 @@ MAKEDEPF90 := makedepf90 -free -m $(MODULE_SUBDIR)/%m.mod -B $(BUILD_DIR)
 ifeq ($(NODEPS),)
   FORTRAN_SOURCES := $(filter-out %.c, $(SRCS) $(SRCS_CHECK) $(addprefix $(BUILD_DIR)/,$(SRCS_GENERATED) $(SRCS_CHECK_GENERATED)))
   $(BUILD_DIR)/depend : $(FORTRAN_SOURCES) | $(BUILD_DIR)
-	MAKEDEPF90=$(call escape,$(MAKEDEPF90)) \
-	MAKEDEPF90FLAGS=$(call escape,$(MAKEDEPF90FLAGS)) \
-	FORTRAN_SOURCES=$(call escape,$(FORTRAN_SOURCES)) \
+	$(MAKEDEPF90) $(MAKEDEPF90FLAGS) -I public:private $(FORTRAN_SOURCES) | \
 	INSTALL_INCLUDES=$(call escape,$(INSTALL_INCLUDES)) \
 	MODULES=$(call escape,$(MODULES)) \
 	BUILD_DIR=$(call escape,$(BUILD_DIR)) \
