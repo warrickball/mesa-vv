@@ -24,8 +24,11 @@ while (my $line = <>) {
         \t\@touch \$@
         \t\$(FCOMPILE_MODULE) $src -J \$(MODULE_DIR)
         $mods : $obj.anc
-        $obj : $src $dep_mods | \$(SCRATCH_DIR)/$obj_fname/ $obj_dir/
+        $obj : $src $dep_mods | \$(SCRATCH_DIR)/ $obj_dir/
+        \t\@rm -rf \$(SCRATCH_DIR)/$obj_fname/
+        \t\@mkdir \$(SCRATCH_DIR)/$obj_fname/
         \t\$($compiler) $src -o $obj -I \$(MODULE_DIR) -J \$(SCRATCH_DIR)/$obj_fname/
+        \t\@rm -rf \$(SCRATCH_DIR)/$obj_fname/
         MAKEFILE
     }
 }
