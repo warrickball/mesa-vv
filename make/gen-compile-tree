@@ -12,6 +12,7 @@ while (my $line = <>) {
         my ($obj, $mods, $src, $dep_mods) = ($1, $2, $3, $4);
         $obj =~ s{$build_dir/$build_dir}{$build_dir};
         my $obj_dir = dirname($obj);
+        my $obj_fname = basename($obj);
         my $compiler = "FCOMPILE";
 
         if ($src =~ /(.*).f$/) {
@@ -23,8 +24,8 @@ while (my $line = <>) {
         \t\@touch \$@
         \t\$(FCOMPILE_MODULE) $src -J \$(MODULE_DIR)
         $mods : $obj.anc
-        $obj : $src $dep_mods | \$(SCRATCH_DIR)/ $obj_dir/
-        \t\$($compiler) $src -o $obj -I \$(MODULE_DIR) -J \$(SCRATCH_DIR)
+        $obj : $src $dep_mods | \$(SCRATCH_DIR)/$obj_fname/ $obj_dir/
+        \t\$($compiler) $src -o $obj -I \$(MODULE_DIR) -J \$(SCRATCH_DIR)/$obj_fname/
         MAKEFILE
     }
 }
