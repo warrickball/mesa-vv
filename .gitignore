@@ -4,19 +4,7 @@ data/version_number
 ## Compilation
 **/build/
 build.log
-.depend
-.order
-*.a
-**/make/*.f
-**/make/*.f90
-**/make/*.mod
-**/make/*.smod
-*.o
-*.so
-/lib/
-/include/
 *.pyc
-*/other/*.mod
 
 ## Debugging/Profiling
 gmon.out
@@ -33,10 +21,6 @@ vgcore.*
 
 ## Documentation
 /dox/
-
-
-## Executables
-*.x
 
 
 ## Output
