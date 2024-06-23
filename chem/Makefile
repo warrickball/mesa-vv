@@ -9,12 +9,15 @@ SRCS := public/chem_def.f90 \
 SRCS_CHECK := test/src/test_chem.f
 INTERNAL_DEPENDS_ON := const utils math
 EXTERNAL_DEPENDS_ON :=
+BINTYPE := static-lib
+
+# Testing
+
 CHECK_RESULTS_GOLDEN := test/test_output
 
 # Install
 
 MODULES := chem_def.mod chem_lib.mod
 INSTALL_INCLUDES :=
-BINTYPE := static-lib
 
 include ../make/Makefile

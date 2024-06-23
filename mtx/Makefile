@@ -26,18 +26,22 @@ SRCS := public/mtx_def.f \
         private/pre_conditioners.f90 \
 	$(LAPACK_QUAD_SRCS)
 SRCS_GENERATED := private/my_lapack95_dble.f90 \
-		 private/my_lapack95_quad.f90
+                  private/my_lapack95_quad.f90
 SRCS_CHECK := test/src/test_banded.f90 \
-             test/src/test_mtx.f90 \
-             test/src/test_mtx_support.f90 \
-             test/src/test_square.f90 \
-             test/src/test_square_quad.f90
+              test/src/test_mtx.f90 \
+              test/src/test_mtx_support.f90 \
+              test/src/test_square.f90 \
+              test/src/test_square_quad.f90
 SRCS_CHECK_GENERATED := \
 	test/src/test_block_tridiagonal_dble.f90 \
 	test/src/test_block_tridiagonal_quad.f90
 # TODO: Also contains test dependencies sadly, I should fix this at some point
 INTERNAL_DEPENDS_ON := const utils math
 EXTERNAL_DEPENDS_ON := lapack
+BINTYPE := static-lib
+
+# Testing
+
 CHECK_RESULTS_GOLDEN := test/test_output
 
 # Install
@@ -60,9 +64,10 @@ INSTALL_INCLUDES := public/mtx_bcyclic_dble_decsol.dek \
                     public/mtx_solve_routines_quad.inc \
                     public/mtx_tridiag_decsol.dek \
                     public/mtx_solve_routines.inc
-BINTYPE := static-lib
 
 include ../make/Makefile
+
+# Custom build steps
 
 $(BUILD_DIR)/private/my_lapack95_dble.f90: private/my_lapack95.F90 | $(BUILD_DIR)/private/
 	$(PREPROCESS) -DDBLE $^ > $@
