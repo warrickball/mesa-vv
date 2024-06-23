@@ -3,7 +3,7 @@ CHECK_RESULT_DIR := $(BUILD_DIR)
 CHECK_RESULTS := $(CHECK_RESULT_DIR)/check-results
 
 $(CHECKER): $(ALL_DEPS) $(OBJS_CHECK) | $(BUILD_DIR)/bin/
-	$(EXECUTABLE) -o $(CHECKER) $(OBJS_CHECK) $(shell PKG_CONFIG_PATH=$(BUILD_DIR)/lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --libs --static mesa-$(MODULE_NAME))
+	$(EXECUTABLE) -o $(CHECKER) $(OBJS_CHECK) $(call pkg-config,--libs --static,mesa-$(MODULE_NAME))
 
 ifneq ($(OBJS_CHECK),)
   $(CHECK_RESULTS) &: $(CHECKER) | $(CHECK_RESULT_DIR)/

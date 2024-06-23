@@ -14,42 +14,43 @@ MAKEFLAGS += --no-builtin-variables
 MAKE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 MAKEFLAGS += -I$(MAKE_DIR)
 
-DEPENDS_ON := $(EXTERNAL_DEPENDS_ON)
-ifneq ($(INTERNAL_DEPENDS_ON),)
-  DEPENDS_ON += $(addprefix mesa-,$(INTERNAL_DEPENDS_ON))
-  PKG_CONFIG_PATH := $(shell $(MAKE) -s --no-print-directory -C $(MAKE_DIR).. print-pkgconfig-path):$(PKG_CONFIG_PATH)
-  export PKG_CONFIG_PATH
-endif
-NODEPS := $(or $(filter clean,$(MAKECMDGOALS)),$(filter print-mesa-deps,$(MAKECMDGOALS)))
-
 BUILD_DIR := $(MAKE_DIR)../build/$(MODULE_NAME)
-include setup-builddir.mk
 
-ifeq ($(MODULE_NAME),)
-  $(error Missing module name)
+NOCOMPILE := $(or \
+  $(filter clean,$(MAKECMDGOALS)), \
+  $(filter print-mesa-deps,$(MAKECMDGOALS)), \
+)
+
+ifeq ($(NOCOMPILE),)
+  include setup-builddir.mk
+  include setup-depends.mk
+
+  ifeq ($(MODULE_NAME),)
+    $(error Missing module name)
+  endif
+
+  include compile-settings-gnu.mk
+  include compile.mk
+  include install-commands.mk
+
+  ifeq ($(BINTYPE), static-lib)
+    include link-static.mk
+  else ifeq ($(BINTYPE), dynamic-lib)
+    include link-dynamic.mk
+  else ifeq ($(BINTYPE), executable)
+    include link-exec.mk
+  else
+    $(error Unknown or unset BINTYPE)
+  endif
+
+  ALL_DEPS += $(OBJ_OUT) $(MODULES) $(INSTALL_INCLUDES_BUILD)
+
+  all: $(ALL_DEPS)
+
+  install: $(INSTALL_COMMANDS)
+
+  include check.mk
 endif
-
-include compile-settings-gnu.mk
-include compile.mk
-include install-commands.mk
-
-ifeq ($(BINTYPE), static-lib)
-  include link-static.mk
-else ifeq ($(BINTYPE), dynamic-lib)
-  include link-dynamic.mk
-else ifeq ($(BINTYPE), executable)
-  include link-exec.mk
-else
-  $(error Unknown or unset BINTYPE)
-endif
-
-ALL_DEPS += $(OBJ_OUT) $(MODULES) $(INSTALL_INCLUDES_BUILD)
-
-all: $(ALL_DEPS)
-
-install: $(INSTALL_COMMANDS)
-
-include check.mk
 
 clean:
 	@rm -rf $(BUILD_DIR)

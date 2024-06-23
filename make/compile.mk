@@ -21,17 +21,16 @@ MODULES := $(addprefix $(MODULE_DIR)/, $(MODULES))
 
 MAKEDEPF90 := makedepf90 -free -m $(MODULE_SUBDIR)/%m.mod -B $(BUILD_DIR)
 
-ifeq ($(NODEPS),)
-  FORTRAN_SOURCES := $(filter-out %.c, $(SRCS) $(SRCS_CHECK) $(addprefix $(BUILD_DIR)/,$(SRCS_GENERATED) $(SRCS_CHECK_GENERATED)))
-  $(BUILD_DIR)/depend : $(FORTRAN_SOURCES) | $(BUILD_DIR)
+FORTRAN_SOURCES := $(filter-out %.c, $(SRCS) $(SRCS_CHECK) $(addprefix $(BUILD_DIR)/,$(SRCS_GENERATED) $(SRCS_CHECK_GENERATED)))
+
+$(BUILD_DIR)/depend : $(FORTRAN_SOURCES) | $(BUILD_DIR)
 	$(MAKEDEPF90) $(MAKEDEPF90FLAGS) -I public:private $(FORTRAN_SOURCES) | \
 	INSTALL_INCLUDES=$(call escape,$(INSTALL_INCLUDES)) \
 	MODULES=$(call escape,$(MODULES)) \
 	BUILD_DIR=$(call escape,$(BUILD_DIR)) \
 	$(MAKE_DIR)/gen-compile-tree > $(BUILD_DIR)/depend
 
-  include $(BUILD_DIR)/depend
-endif
+include $(BUILD_DIR)/depend
 
 .SECONDEXPANSION:
 

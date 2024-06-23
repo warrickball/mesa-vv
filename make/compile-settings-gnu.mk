@@ -8,9 +8,7 @@ FLAGS_DEBUG := -ggdb
 # no-sign-zero only affects output formatting
 FFLAGS_COMPAT := -fno-sign-zero
 FFLAGS_FIXED := -ffixed-form -ffixed-line-length-none -x f77-cpp-input -std=f2008 -fstack-protector-all -fstack-clash-protection -D_FORTIFY_SOURCE=2
-ifneq ($(and $(DEPENDS_ON),$(if $(NODEPS),,deps)),)
-  FLAGS_DEPS := $(shell pkg-config --cflags $(DEPENDS_ON)) -Ipublic -Iprivate
-endif
+FLAGS_DEPS := $(call pkg-config,--cflags,$(DEPENDS_ON)) -Ipublic -Iprivate
 
 FFLAGS_LEGACY := $(FFLAGS_FP_SANITY) $(FLAGS_REPRO) $(FLAGS_OPT) $(FLAGS_PREPROCESSOR) $(FLAGS_DEBUG) $(FFLAGS_COMPAT) $(FLAGS_DEPS) $(FFLAGS_FIXED) $(FFLAGS)
 FFLAGS := $(FLAGS_CODE_SANITY) $(FFLAGS_FP_SANITY) $(FFLAGS_FORTRAN_SANITY) $(FLAGS_REPRO) $(FLAGS_OPT) $(FLAGS_PREPROCESSOR) $(FLAGS_DEBUG) $(FFLAGS_COMPAT) $(FLAGS_DEPS) $(FFLAGS)
@@ -21,9 +19,7 @@ FCOMPILE := gfortran $(FFLAGS) -c
 FCOMPILE_MODULE := gfortran $(FFLAGS) -c -fsyntax-only
 FCOMPILE_LEGACY := gfortran $(FFLAGS_LEGACY) -c
 CCOMPILE := gcc $(CFLAGS) -c
-ifneq ($(and $(DEPENDS_ON),$(if $(NODEPS),,deps)),)
-  LIB_DEP_ARGS := $(shell pkg-config --libs --static $(DEPENDS_ON))
-endif
+LIB_DEP_ARGS := $(call pkg-config, --libs --static,$(DEPENDS_ON))
 LIB_TOOL_STATIC := ar rcs
 LIB_TOOL_DYNAMIC := gfortran -dynamic
 EXECUTABLE := gfortran
