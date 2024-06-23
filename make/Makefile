@@ -11,10 +11,14 @@ MAKEFLAGS += --no-builtin-variables
 
 # Position independent
 
-MAKE_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+define clean-comp
+$(shell realpath -s --relative-to=$${PWD} $1)
+endef
+
+MAKE_DIR := $(call clean-comp,$(dir $(lastword $(MAKEFILE_LIST))))/
 MAKEFLAGS += -I$(MAKE_DIR)
 
-BUILD_DIR := $(MAKE_DIR)../build/$(MODULE_NAME)
+BUILD_DIR := $(call clean-comp,$(MAKE_DIR)../build/$(MODULE_NAME))
 
 NOCOMPILE := $(or \
   $(filter clean,$(MAKECMDGOALS)), \
