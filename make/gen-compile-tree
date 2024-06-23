@@ -32,7 +32,7 @@ while (my $line = <>) {
 foreach my $f (split " ","$install_includes $modules") {
     my $basename_f = basename($f);
     print <<~"MAKEFILE"
-    \$(BUILD_DIR)/include/$basename_f : $f | \$(BUILD_DIR)/include/
+    $build_dir/include/$basename_f : $f | $build_dir/include/
     \tcp \$^ \$@
     MAKEFILE
 }
