@@ -312,7 +312,7 @@ program kap_plotter
          call set_nan(dlnkap_dlnRho)
          call set_nan(dlnkap_dlnT)
          call set_nan(dlnkap_dxa)
-         
+
          call kap_get( &
               kap_handle, species, chem_id, net_iso, xa, log10Rho, log10T, &
               res(i_lnfree_e), d_dlnd(i_lnfree_e), d_dlnT(i_lnfree_e), &
@@ -328,10 +328,14 @@ program kap_plotter
                res1 = dlnkap_dlnT
             end if
          else
-            res1 = log(kap)
+            if (is_nan(kap) .OR. kap <= 0) then
+               call set_nan(res1)
+            else
+               res1 = log(kap)
+            end if
          end if
 
-         if (doing_dfridr) then
+         if (doing_dfridr .and. is_nan(kap)) then
             var = log(kap)
             if (doing_d_dlnd) then
                dvardx_0 = dlnkap_dlnRho
@@ -347,7 +351,11 @@ program kap_plotter
          end if
 
 
-         write(iounit,*) kval, jval, res1
+         if (is_nan(kap)) then
+            write(iounit,*) kval, jval, "NaN"
+         else
+            write(iounit,*) kval, jval, res1
+         end if
       end do
    end do
 
@@ -500,7 +508,7 @@ contains
       lnd = log10Rho*ln10
 
       ! must call eos to get new lnfree_e info
-      
+
       if (doing_d_dlnd) then
          log_var = (lnd + delta_x)/ln10
          var = exp10(log_var)
